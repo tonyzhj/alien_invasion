@@ -2,7 +2,6 @@ import sys
 from time import sleep
 import pygame
 from alien import Alien
-from bullet import Bullet
 
 FIRE = False
 COUNT = 0
@@ -20,7 +19,7 @@ def create_fleet(settings, screen, aliens):
             alien.top = (row_number*2 + 1)*alien_height
             aliens.add(alien)
 
-def check_events(settings, screen, ship, bullets):
+def check_events(settings, screen, status, play_button, ship, bullets):
     global FIRE
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -32,8 +31,6 @@ def check_events(settings, screen, ship, bullets):
                 ship.moving_left = True
             elif event.key == pygame.K_SPACE:
                 FIRE = True
-                #bullet = Bullet(settings, screen, ship)
-                #bullets.add(bullet)
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_RIGHT:
                 ship.moving_right = False
@@ -41,13 +38,10 @@ def check_events(settings, screen, ship, bullets):
                 ship.moving_left = False
             elif event.key == pygame.K_SPACE:
                 FIRE = False
-    global COUNT
-    if FIRE:
-        COUNT += 1
-        if COUNT == 15:
-            bullet = Bullet(settings, screen, ship)
-            bullets.add(bullet)
-            COUNT = 0
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            if play_button.rect.collidepoint(mouse_x, mouse_y):
+                status.game_active = True
 
 def on_ship_hit(settings, screen, ship, bullets, aliens):
     bullets.empty()
