@@ -10,7 +10,7 @@ def create_fleet(settings, screen, aliens):
     alien_width = alien.rect.width
     alien_height = alien.rect.height
     numbers_x = int(settings.screen_width / (alien_width * 2))
-    numbers_y = 2
+    numbers_y = 3
 
     for row_number in range(numbers_y):
         for alien_number in range(numbers_x):
@@ -42,11 +42,16 @@ def check_events(settings, screen, status, play_button, ship, bullets):
             mouse_x, mouse_y = pygame.mouse.get_pos()
             if play_button.rect.collidepoint(mouse_x, mouse_y):
                 status.game_active = True
+                pygame.mouse.set_visible(False)
 
-def on_ship_hit(settings, screen, ship, bullets, aliens):
+def on_ship_hit(settings, screen, status, ship, bullets, aliens):
     bullets.empty()
     aliens.empty()
-    ship.center = ship.screen_rect.centerx
-    sleep(0.5)
-    create_fleet(settings, screen, aliens)
-    print("Ship hit!!!")                
+    if status.ship_num > 0:
+        status.ship_num -= 1
+        ship.center = ship.screen_rect.centerx
+        sleep(0.5)
+        create_fleet(settings, screen, aliens)
+    else:
+        status.game_active = False
+    print("Ship hit!!!")
