@@ -42,16 +42,21 @@ def check_events(settings, screen, status, play_button, ship, bullets):
             mouse_x, mouse_y = pygame.mouse.get_pos()
             if play_button.rect.collidepoint(mouse_x, mouse_y):
                 status.game_active = True
+                status.ship_num = settings.ship_total_num
                 pygame.mouse.set_visible(False)
 
 def on_ship_hit(settings, screen, status, ship, bullets, aliens):
     bullets.empty()
     aliens.empty()
+    status.ship_num -= 1
+    ship.center = ship.screen_rect.centerx
+    ship.updates()
+
     if status.ship_num > 0:
-        status.ship_num -= 1
-        ship.center = ship.screen_rect.centerx
         sleep(0.5)
-        create_fleet(settings, screen, aliens)
     else:
         status.game_active = False
+        pygame.mouse.set_visible(True)
+    create_fleet(settings, screen, aliens)
+
     print("Ship hit!!!")

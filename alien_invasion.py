@@ -44,6 +44,10 @@ def run_game():
             if not aliens:
                 gf.create_fleet(settings, screen, aliens)
 
+        pygame.sprite.groupcollide(bullets, aliens, True, True)
+        if pygame.sprite.spritecollideany(ship, aliens):
+            gf.on_ship_hit(settings, screen, status, ship, bullets, aliens)
+
         ship.blitme()
         for bullet in bullets:
             bullet.draw_bullet()
@@ -51,11 +55,6 @@ def run_game():
             alien.blitme()
         if not status.game_active:
             play_button.draw_button()
-
-        pygame.sprite.groupcollide(bullets, aliens, True, True)
-
-        if pygame.sprite.spritecollideany(ship, aliens):
-            gf.on_ship_hit(settings, screen, status, ship, bullets, aliens)
 
         pygame.display.flip()
 
