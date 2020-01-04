@@ -6,6 +6,7 @@ from settings import Settings
 from button import Button
 from bullet import Bullet
 from game_status import Gamestatus
+from score_board import ScoreBoard
 
 def run_game():
     pygame.init()
@@ -22,10 +23,11 @@ def run_game():
     play_button = Button(settings, screen, "Play")
     play_button.draw_button()
     bullets = Group()
+    score_board = ScoreBoard(settings, screen)
 
     while True:
         screen.fill(settings.bg_color)
-        gf.check_events(settings, screen, status, play_button, ship, bullets)
+        gf.check_events(settings, screen, status, play_button, ship, bullets, score_board)
 
         if status.game_active:
             ship.updates()
@@ -46,7 +48,7 @@ def run_game():
 
         pygame.sprite.groupcollide(bullets, aliens, True, True)
         if pygame.sprite.spritecollideany(ship, aliens):
-            gf.on_ship_hit(settings, screen, status, ship, bullets, aliens)
+            gf.on_ship_hit(settings, screen, status, ship, bullets, aliens, score_board)
 
         ship.blitme()
         for bullet in bullets:
@@ -55,6 +57,8 @@ def run_game():
             alien.blitme()
         if not status.game_active:
             play_button.draw_button()
+
+        score_board.draw()
 
         pygame.display.flip()
 
