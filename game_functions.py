@@ -15,7 +15,7 @@ def create_fleet(settings, screen, aliens):
     for row_number in range(numbers_y):
         for alien_number in range(numbers_x):
             alien = Alien(settings, screen)
-            alien.rect.left = (alien_number*2 + 1)*alien_width
+            alien.left = (alien_number*2 + 1)*alien_width
             alien.top = (row_number*2 + 1)*alien_height
             aliens.add(alien)
 
@@ -50,6 +50,7 @@ def on_ship_hit(settings, screen, status, ship, bullets, aliens, score_board):
     bullets.empty()
     aliens.empty()
     status.ship_num -= 1
+    status.alien_move_x = True
     ship.center = ship.screen_rect.centerx
     ship.updates()
     score_board.updates(status)

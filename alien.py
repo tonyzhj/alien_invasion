@@ -9,12 +9,14 @@ class Alien(Sprite):
         self.rect = self.image.get_rect()
         self.speed_factor = settings.alien_speed_factor
         self.top = float(self.rect.top)
+        self.left = float(self.rect.left)
 
     def updates(self):
         if self.top < self.screen.get_rect().height:
             self.top += self.speed_factor
-        self.rect.top = self.top
 
     def blitme(self):
+        self.rect.top = self.top
+        self.rect.left = self.left
         self.screen.blit(self.image, self.rect)
         

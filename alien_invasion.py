@@ -21,9 +21,9 @@ def run_game():
     gf.create_fleet(settings, screen, aliens)
     #create a begin button
     play_button = Button(settings, screen, "Play")
-    play_button.draw_button()
     bullets = Group()
     score_board = ScoreBoard(settings, screen)
+    alien_success = False
 
     while True:
         screen.fill(settings.bg_color)
@@ -32,7 +32,18 @@ def run_game():
         if status.game_active:
             ship.updates()
             for alien in aliens:
+                if alien.rect.top >= screen.get_rect().height:
+                    alien_success = True
                 alien.updates()
+                if status.alien_move_x:
+                    alien.left += settings.alien_speed_factor
+                    if alien.left >= settings.screen_width - alien.rect.width:
+                        status.alien_move_x = False
+                else:
+                    alien.left -= settings.alien_speed_factor
+                    if alien.left <= 0:
+                        status.alien_move_x = True
+                        
             for bullet in bullets:
                 bullet.updates()
 
@@ -45,10 +56,15 @@ def run_game():
 
             if not aliens:
                 gf.create_fleet(settings, screen, aliens)
+                status.alien_move_x = True
 
         pygame.sprite.groupcollide(bullets, aliens, True, True)
         if pygame.sprite.spritecollideany(ship, aliens):
+            alien_success = True
+        
+        if alien_success:
             gf.on_ship_hit(settings, screen, status, ship, bullets, aliens, score_board)
+            alien_success = False
 
         ship.blitme()
         for bullet in bullets:
