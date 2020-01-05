@@ -2,9 +2,8 @@ import sys
 from time import sleep
 import pygame
 from alien import Alien
+from bullet import Bullet
 
-FIRE = False
-COUNT = 0
 def create_fleet(settings, screen, aliens):
     alien = Alien(settings, screen)
     alien_width = alien.rect.width
@@ -20,7 +19,6 @@ def create_fleet(settings, screen, aliens):
             aliens.add(alien)
 
 def check_events(settings, screen, status, play_button, ship, bullets, score_board):
-    global FIRE
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
@@ -30,14 +28,14 @@ def check_events(settings, screen, status, play_button, ship, bullets, score_boa
             elif event.key == pygame.K_LEFT:
                 ship.moving_left = True
             elif event.key == pygame.K_SPACE:
-                FIRE = True
+                if status.game_active:
+                    bullet = Bullet(settings, screen, ship)
+                    bullets.add(bullet)
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_RIGHT:
                 ship.moving_right = False
             elif event.key == pygame.K_LEFT:
                 ship.moving_left = False
-            elif event.key == pygame.K_SPACE:
-                FIRE = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             if play_button.rect.collidepoint(mouse_x, mouse_y):

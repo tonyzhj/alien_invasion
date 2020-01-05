@@ -47,18 +47,11 @@ def run_game():
             for bullet in bullets:
                 bullet.updates()
 
-            if gf.FIRE:
-                gf.COUNT += 1
-                if gf.COUNT == 15:
-                    bullet = Bullet(settings, screen, ship)
-                    bullets.add(bullet)
-                    gf.COUNT = 0
-
             if not aliens:
                 gf.create_fleet(settings, screen, aliens)
                 status.alien_move_x = True
 
-        pygame.sprite.groupcollide(bullets, aliens, True, True)
+        pygame.sprite.groupcollide(bullets, aliens, False, True)
         if pygame.sprite.spritecollideany(ship, aliens):
             alien_success = True
         
