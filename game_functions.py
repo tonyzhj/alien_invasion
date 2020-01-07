@@ -41,17 +41,15 @@ def check_events(settings, screen, status, play_button, ship, bullets, score_boa
             if play_button.rect.collidepoint(mouse_x, mouse_y):
                 status.game_active = True
                 status.ship_num = settings.ship_total_num
-                score_board.updates(status)
+                status.score = 0
                 pygame.mouse.set_visible(False)
 
-def on_ship_hit(settings, screen, status, ship, bullets, aliens, score_board):
+def on_ship_hit(settings, screen, status, ship, bullets, aliens):
     bullets.empty()
     aliens.empty()
     status.ship_num -= 1
     status.alien_move_x = True
     ship.center = ship.screen_rect.centerx
-    ship.updates()
-    score_board.updates(status)
 
     if status.ship_num > 0:
         sleep(0.5)

@@ -13,5 +13,5 @@ class Settings():
         self.bullet_color = 60, 60, 60
         self.bullet_speed_factor = 3
 
-        self.alien_speed_factor = 0.2
+        self.alien_speed_factor = 0.1
 
