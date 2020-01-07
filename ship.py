@@ -17,15 +17,14 @@ class Ship(Sprite):
         self.moving_right = False
         self.moving_left = False
         self.ship_speed_factor = settings.ship_speed_factor
-        
-
-    def blitme(self):
-        """在指定位置绘制飞船"""
-        self.screen.blit(self.image,self.rect)
-    
+            
     def updates(self):
         if self.moving_right and self.rect.right < self.screen_rect.right:
             self.center += self.ship_speed_factor
         if self.moving_left and self.rect.left > self.screen_rect.left:
             self.center -= self.ship_speed_factor
+
+    def blitme(self):
+        """在指定位置绘制飞船"""
         self.rect.centerx = self.center
+        self.screen.blit(self.image,self.rect)
